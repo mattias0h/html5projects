@@ -25,5 +25,5 @@ function showMood() {
 function clearMood() {
     document.getElementById('moodForm').reset();
     holder = document.getElementById('holder');
-    holder.innerHTML = "";
+    holder.innerHTML = " ";
 }
