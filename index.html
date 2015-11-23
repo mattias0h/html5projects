@@ -15,7 +15,7 @@
     <body>
         <div id="container">
             <header id="main">
-                <h1>Minu HTML5 veebileht</h1>
+                <h1>Mood Teller</h1>
             </header>
             <nav>
                 <ul>
@@ -28,9 +28,19 @@
             <main>
                 <section id="main">
                     <article>
-                        <h2>My headline</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut facere fuga, harum inventore laboriosam libero molestiae natus rem! Deleniti ea hic illo iure magni mollitia necessitatibus possimus quod suscipit vitae.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dicta dignissimos, ea eaque esse harum illum, laboriosam libero mollitia obcaecati porro quae quas, repudiandae sapiente sed similique vel vitae voluptatem?</p>
+                        <h2>Mood Teller</h2>
+                        <p>Please type in your name and current mood</p>
+
+                        <form id="moodForm" action="#">
+                            <label>Name:</label>
+                            <input type="text" id="name" placeholder="Ener your name...">
+                            <br><br>
+                            <label>Mood:</label>
+                            <input type="text" id="mood" placeholder="Ener your mood...">
+                            <br><br>
+                            <button onclick="showMood()">Tell Me</button><button onclick="clearMood()">Clear mood</button>
+                        </form>
+                        <div id="holder"></div>
                     </article>
                 </section>
                 <aside>
