@@ -257,6 +257,7 @@ article .readmore:hover {
 #main-footer .footer-nav li {
     padding:5px 0 5px 0;
     border-bottom:dotted #666 1px;
+    list-style: none;
 }
 
 
