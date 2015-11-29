@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
     var items = $('#gallery li'),
-        itemsByTags = [];
+        itemsByTags = {};
 
     //Loop through tags
     items.each(function (i) {
@@ -33,5 +33,40 @@ $(document).ready(function() {
 
     $.each(itemsByTags, function (k, v) {
         createList(k, v);
-    })
+    });
+
+    //Click Handler
+    $('#navbar').on('click', 'a', function(e) {
+        var link = $(this);
+
+        //Add active class
+        link.addClass('active').siblings().removeClass('active');
+
+        $('#gallery').quicksand(link.data('list').find('li'));
+        e.preventDefault();
+    });
+
+    $('#navbar a:first').click();
+
+    //Create lists
+    function createList(text, items) {
+        //Create empty ul
+        var ul = $('<ul>', {'class':'hidden'});
+
+        $.each(items, function () {
+            $(this).clone().appendTo(ul);
+        });
+
+        //Add gallery div
+        ul.appendTo('#gallery');
+
+        //Create menu item
+        var a = $('<a>', {
+            html:text,
+            href:'#',
+            data:{list:ul}
+        }).appendTo('#navbar');
+
+
+    }
 });
