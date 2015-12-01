@@ -16,6 +16,7 @@ $(document).ready(function() {
 
     //Initializer
     function init(){
+        d = "right";
         create_snake();
         create_food();
         score = 0;
@@ -61,8 +62,11 @@ $(document).ready(function() {
 
         //Collide code
         if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array)){
-            init();
-
+            //init();
+            //Insert score
+            $('#final_score').html(score);
+            //Show overlay
+            $('#overlay').fadeIn(300);
             return;
         }
 
@@ -103,4 +107,13 @@ $(document).ready(function() {
         }
         return false;
     }
+
+    //Keyboard
+    $(document).keydown(function (e) {
+        var key = e.which;
+        if(key == "37" && d !="right") d = "left";
+        else if(key == "38" && d != "down") d = "up";
+        else if(key == "39" && d != "left") d = "right";
+        else if(key == "40" && d != "up") d = "down";
+    })
 });
