@@ -15,8 +15,8 @@ canvas {
 
 .container {
     margin:30px auto 0 auto;
-    width:600px;
-    overflow: auto;
+    width:602px;
+    overflow: hidden;
     position: relative;
 }
 
@@ -31,7 +31,18 @@ canvas {
     overflow: auto;
 }
 
-.score {
+#score {
+    width:25%;
+    height:50px;
+    padding-top: 20px;
+    float: left;
+    margin-right:5px;
+    overflow: auto;
+    background: #000000;
+    text-align: center;
+}
+
+#high_score {
     width:25%;
     height:50px;
     padding-top: 20px;
