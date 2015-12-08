@@ -22,7 +22,7 @@ function Note() {
     var note = document.createElement('div');
     note.className = 'note';
     note.addEventListener('mousedown', function (e) {
-        return self.onmousedown(e)
+        return self.onMouseDown(e)
     }, false);
     note.addEventListener('click', function() {
         return self.onNoteClick()
@@ -36,12 +36,10 @@ function Note() {
     }, false);
     note.appendChild(close);
 
-    var edit = createElement('div');
+    var edit = document.createElement('div');
     edit.className = 'edit';
-    edit.setAttribute('contenteditable', false);
-    edit.addEventListener('keyup', function () {
-        return self.OnKeyUp()
-    }, false);
+    edit.setAttribute('contenteditable', true);
+    edit.addEventListener('keyup', function () {return self.onKeyUp()}, false);
     note.appendChild(edit);
     this.editField = edit;
 
@@ -54,7 +52,7 @@ function Note() {
     this.lastModified = ts;
 
     document.body.appendChild(note);
-    return this.
+    return this;
 }
 
 Note.prototype = {
@@ -89,7 +87,7 @@ Note.prototype = {
         this._timestamp = x;
         var date = new Date();
         date.setTime(parseFloat(x));
-        this-lastModified.textContent = modifiedString(date);
+        this.lastModified.textContent = modifiedString(date);
     },
 
     get left() {
@@ -128,9 +126,7 @@ Note.prototype = {
     saveSoon: function() {
         this.cancelPendingSave();
         var self = this;
-        this._saveTimer = setTimeout(function() {
-            self.save();
-        }, 200);
+        this._saveTimer = setTimeout(function(){self.save()},200);
     },
 
     cancelPendingSave: function () {
@@ -148,35 +144,37 @@ Note.prototype = {
             delete this.dirty;
         }
 
-        var note this;
+        var note = this;
         db.transaction(function(tx) {
             tx.executeSql("Update MyStickys SET note = ?,timestamp = ?, left = ?, top = ?, zIndex = ? WHERE id = ?", [note.text, note.timestamp, note.left, note.top, note.zIndex, note.id]);
         });
     },
 
     saveAsNew: function() {
-        this.timestamp = new Date.getTime();
+        this.timestamp = new Date().getTime();
 
         var note = this;
         db.transaction(function(tx) {
-            tx.executeSql("INSERT INTO MyStickys (id, note, timestamp, left, top, zindex) VALUES(?, ?, ?, ?, ?, ?)", [note.id, note.text, note.timestamp, note.left, note.top, note.zindex]);
+            tx.executeSql("INSERT INTO MyStickys (id, note, timestamp, left, top, zindex) VALUES(?, ?, ?, ?, ?, ?)", [note.id, note.text, note.timestamp, note.left, note.top, note.zIndex]);
         });
     },
 
     onMouseDown: function(e) {
-        capture = this;
+        captured = this;
         this.startX = e.clientX - this.note.offsetLeft;
-        this.startY = e.clientY - this.note.offsetRight;
+        this.startY = e.clientY - this.note.offsetTop;
         this.zIndex = ++highestZ;
 
         var self = this;
         if(!("mouseMoveHandler" in this)) {
-            this.mouseMoveHandler = function(e) {return self.onMouseMove(e)}
+            this.mouseMoveHandler = function(e) {return self.onMouseMove(e)};
             this.mouseUpHandler = function(e) {return self.onMouseUp(e)}
         }
 
         document.addEventListener("mousemove", this.mouseMoveHandler, true);
         document.addEventListener("mouseup", this.mouseUpHandler, true);
+
+        return false;
     },
 
     onMouseMove: function(e) {
@@ -189,7 +187,7 @@ Note.prototype = {
     },
 
     onMouseUp: function(e) {
-        document.removeEventListener("mousemove", this.mouseOverHandler, true);
+        document.removeEventListener("mousemove", this.mouseMoveHandler, true);
         document.removeEventListener("mouseup", this.mouseUpHandler, true);
 
         this.save();
@@ -201,11 +199,11 @@ Note.prototype = {
         getSelection().collapseToEnd();
     },
 
-    onKeyUp() {
+    onKeyUp: function() {
         this.dirty = true;
         this.saveSoon();
     }
-}
+};
 
 function loaded() {
     db.transaction(function (tx) {
@@ -249,7 +247,21 @@ function loadNotes() {
 }
 
 function modifiedString(date) {
-    return "Sticky Last Modified: " + date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getHours() + ":" + date.getMinutes() + ":"  + date.getSeconds()
+    return "Sticky Last Modified: " + date.getFullYear() + " - " + (date.getMonth() + 1) + " - " + date.getHours() + ":" + date.getMinutes() + ":"  + date.getSeconds();
+}
+
+function newNote() {
+    var note = new Note();
+    note.id = ++highestId;
+    note.timestamp = new Date().getTime();
+    note.left = Math.round(Math.random() * 400) + "px";
+    note.top = Math.round(Math.random() * 500) + "px";
+    note.zIndex == ++highestZ;
+    note.saveAsNew();
+}
+
+if(db != null) {
+    document.addEventListener("load", loaded, false);
 }
 
 
