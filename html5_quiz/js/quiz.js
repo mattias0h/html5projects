@@ -22,44 +22,24 @@ $(document).ready(function() {
 
     $('#q1').show(); //Show first q
 
-    $('#q1 #submit').click(function() {
+    $('.questionForm #submit').click(function() {
+       //Get data attr
+        current = $(this).parents('form:first').data('question');
+        next = $(this).parents('form:first').data('question')+1;
+        //Hide q
         $('.questionForm').hide();
-        process('q1');
-        $('#q2').fadeIn(300);
-        return false;
-    });
-
-    $('#q2 #submit').click(function() {
-        $('.questionForm').hide();
-        process('q2');
-        $('#q3').fadeIn(300);
-        return false;
-    });
-
-    $('#q3 #submit').click(function() {
-        $('.questionForm').hide();
-        process('q3');
-        $('#q4').fadeIn(300);
-        return false;
-    });
-
-    $('#q4 #submit').click(function() {
-        $('.questionForm').hide();
-        process('q4');
-        $('#q5').fadeIn(300);
-        return false;
-    });
-
-    $('#q15 #submit').click(function() {
-        $('.questionForm').hide();
-        process('q5');
-        $('#results').fadeIn(300);
+        //Show next q
+        $('#q'+next+'').fadeIn(300);
+        process(''+current+'');
         return false;
     });
 });
 
 //Process the answers
-function process(q) {
+function process(n) {
+    //Get value
+    var submitted = $('input[name=q1]:checked').val();
+
     if(q == "q1") {
         var submitted = $('input[name=q1]:checked').val();
         if(submitted == sessionStorage.a1) {
