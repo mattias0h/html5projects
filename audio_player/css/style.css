@@ -118,6 +118,7 @@ button#next {
 
 #tracker {
     position:relative;
+    width:100%;
 }
 
 #progress-bar {
@@ -127,12 +128,14 @@ button#next {
     margin-top:10px;
     height:10px;
     background:url(../images/progress_bg.png) no-repeat;
+    float: left;
 }
 
-#progess {
+#progress {
     background:url(../images/progress.png) no-repeat;
     height:10px;
     display:inline-block;
+    position: absolute;
 }
 
 #duration{
