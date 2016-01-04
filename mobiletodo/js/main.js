@@ -43,13 +43,41 @@ var i = 0;
         }
     });
 
-$('#todos').on('click','#todo_link', function() {
-    localStorage.setItem('currentTodoName',$(this).data('todo_name'));
-    localStorage.setItem('currentTodoDate',$(this).data('todo_date'));
-});
+    //Delete todo
+    $('#edit_form').on('click','#delete', function () {
+        currentTodoName = localStorage.getItem('currentTodoName');
+        currentTodoDate = localStorage.getItem('currentTodoDate');
+        //Loop throygh todos
+        for(var i=0; i < todoList.length; i++) {
+            if(todoList[i].todo_name == currentTodoName) {
+                todoList.splice(i,1);
+            }
+            localStorage.setItem('todos',JSON.stringify(todoList));
+        }
+        //Close and go home
+        $.mobile.changePage($('#home'),'pop');
+    });
+
+    $('#todos').on('click','#todo_link', function() {
+        localStorage.setItem('currentTodoName',$(this).data('todo_name'));
+        localStorage.setItem('currentTodoDate',$(this).data('todo_date'));
+    });
+
+    $(document).on('pageshow','#edit', function() {
+        currentTodoName = localStorage.getItem('currentTodoName');
+        currentTodoDate = localStorage.getItem('currentTodoDate');
+        $('#edit_form input[name=todo_name]', this).val(currentTodoName);
+        $('#edit_form input[name=todo_date]', this).val(currentTodoDate);
+    });
+
+    $(document).on('pageshow','#home', function() {
+        window.location.reload();
+    });
 
     //Clear Todos
     $('#clear_btn').click(function () {
         localStorage.clear();
     });
+
+
 });
